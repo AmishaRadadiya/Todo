@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TODO</title>
+    <script src="https://kit.fontawesome.com/ab82b699ee.js" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <style>
+        *{
+            margin: auto;
+            padding:0;
+        }
+       input{
+            background-color: #4a707a;
+            color: white;
+            margin: 20px;
+            padding: 0 5px;
+            height: 25px;
+            border-radius: 5px;
+        }
+        #task,#des,#Addtask,#edit{
+            width: 20em;
+        }
+        input::placeholder{
+            color: white;
+        }
+        #Addtask, #edit{
+            width: 200px;  
+        }
+        .main{
+            display: flex;
+            justify-content: space-around;
+        }
+        .both{
+            display: flex;
+            flex-direction: column;
+            align-items: center;  
+        }
+        .one, .two{
+            display: flex;
+            margin:0 0;
+        }
+        #pan ,#com{
+            width: 70em;
+        }
+        #pan h2,#com h2{
+            background-color: #4a707a;
+            color: white;
+            font-weight: bold;
+            margin: 10px 0;
+            text-align: center;
+            border-radius: 10px;
+        }
+       .fa-sharp{
+        margin-left: 10px;
+       }
+       .edit{
+        background-color: #4a707a;
+        width: 40px;
+        color: white;
+        border-radius: 5px;
+       }
+       .fa-sharp{
+        color: #4a707a;
+       }
+    </style>
+</head>
+<script>
+    var pedding = []
+    var completed = []
+    const url="https://internapp.vercel.app/amisha/todos/";
+    function randomId(){
+                return Math.floor(Math.random() * 1000)
+            }
+            function again(id){
+                        var data = {
+                        pedding : [],
+                        Completed : false
+                    }
+                    $.ajax({
+                        url: url + id,
+                        method : "PUT",
+                        data : JSON.stringify(data),
+                        contentType : "application/json",
+                        success : function(data){
+                            $("."+id).remove()
+                            $.each(data, function(key, val){
+                            if (val.Completed) {
+                                pending.push(val)
+                            }
+                             })
+                          get()
+                        }
+                        })
+                    } 
+            function checkbox(id){
+                if ($("input.check").is(':checked')) {
+                    var data = {
+                        completed : [],
+                        Completed : true
+                    }
+                    $.ajax({
+                        url: url + id,
+                        method : "PUT",
+                        data : JSON.stringify(data),
+                        contentType : "application/json",
+                        success : function(data){
+                            $("."+id).remove()
+                            $.each(data, function(key, val){
+                            if (val.Completed) {
+                                completed.push(val)
+                            }
+                             })
+                            get()
+                        }
+                        })
+                }  
+                }
+                function del(id){
+                        $.ajax({
+                            url : url + id,
+                            type : "DELETE",
+                            success : function(){
+                                location.reload()
+                            }
+                        })
+                }
+                function Edit(id){
+                    $("#Addtask").hide();
+                    $("#edit").show();
+                    $.get(url + id , function(data){
+                        $("#task").val(data.title);
+                        $("#des").val(data.description);
+                    }) 
+                    $("#edit").click(function(){
+                        var data = {
+                            title: $("#task").val(),
+                            description: $("#des").val()
+                        }
+                        $.ajax({
+                        url: url + id,
+                        method : "PUT",
+                        data : JSON.stringify(data),
+                        contentType : "application/json",
+                        success : function(data){
+                            location.reload()
+                        }
+                        })
+                    })
+                }
+                function Pending(){
+                    pending.forEach(val => {
+                        todo = "";
+                        todo += `<div class = "${val.id}" style="background-color:#ddddda; border:2px solid black;  margin-bottom:2px; color:black; display:flex; border-radius:7px; justify-content:space-between; padding:10px; ">`
+                        todo += `<div class="one">`
+                        todo += `<input type="checkbox" id="${val.id}" onclick="checkbox('${val.id}')" class="check">`
+                        todo += `<ul style="list-style: none;">`;
+                        todo += `<li>` +val.title+ `</li>`;
+                        todo += `<li style="font-style: italic; font-weight: lighter;">` +val.description+ `</li>`;
+                        todo += `</ul>`;
+                        todo += `</div>`;
+                        todo += `<div class="two">`
+                        todo += `<button id="${val.id}" onclick= "Edit('${val.id}')" class="edit">` + "Edit" + `</button>`;
+                        todo += `<i class="fa-sharp fa-solid fa-trash" id="${val.id}" onclick= "del('${val.id}')" >` + `</i>`
+                        todo += `</div>`;
+                        todo += `</div>`;
+                        $("#pan h4").append(todo);
+                    });
+                }
+                function Completed(){
+                    completed.forEach(val => {
+                        todo = "";
+                        todo += `<div class = "${val.id}" style="background-color:#ddddda; border:2px solid black;  margin-bottom:2px; color:black; display:flex; border-radius:7px; justify-content:space-between; padding:10px; ">`
+                        todo += `<div class="one">`
+                        todo += `<input type="checkbox" id="${val.id}" onclick="again('${val.id}')" class="check" checked>`
+                        todo += `<ul style="list-style: none;">`;
+                        todo += `<li>` +val.title+ `</li>`;
+                        todo += `<li style="font-style: italic; font-weight: lighter;">` +val.description+ `</li>`;
+                        todo += `</ul>`;
+                        todo += `</div>`;
+                        todo += `<div class="two">`
+                        todo += `<button id="${val.id}" onclick= "Edit('${val.id}')" class="edit">` + "Edit" + `</button>`;
+                        todo += `<i class="fa-sharp fa-solid fa-trash" id="${val.id}" onclick= "del('${val.id}')" >` + `</i>`
+                        todo += `</div>`;
+                        todo += `</div>`;
+                        $("#com h4").append(todo);
+                    });
+                }
+                function get(){
+                    $("#pan h4").empty();
+                    $("#com h4").empty();
+                    $.get(url , function(data){
+                        pending =[];
+                        completed = [];
+                        $.each(data, function(key, val){
+                            if (val.Completed) {
+                                completed.push(val)
+                            }
+                            else {
+                                pending.push(val)
+                            }
+                    })
+                    Pending();
+                    Completed();
+                })
+                }
+    $(document).ready(function(){
+        get()
+        $("#Addtask").click(function(e){
+            e.preventDefault();
+            var data = {
+                id : randomId(),
+                title : $("#task").val(),
+                description: $("#des").val(),
+                Completed : false
+            }
+            $.ajax({
+                url: url,
+                method : "POST",
+                contentType: "application/json",
+                data: JSON.stringify(data),
+                success: function(){
+                    $("#pan h4").empty()
+                    $("#task").val('')
+                    $("#des").val('')
+                    get()
+                }
+            })
+        })
+    })
+</script>
+<body>
+    <div class="main">
+        <input type="text" placeholder="Add Task" id="task" name="title">
+        <input type="text" placeholder="Add Task Description" id="des" name="description">
+        <input type="submit" value="Add Task" id="Addtask" >
+        <input type="submit" value="Edit " id="edit" style="display: none;">
+    </div>
+    <div class="both">
+        <div id="pan">
+            <h2>Pending Task</h2>
+            <h4></h4>
+        </div>
+        <div id="com">
+            <h2>Completed Task</h2>
+            <h4></h4>
+        </div>
+    </div>
+</body>
+</html>
