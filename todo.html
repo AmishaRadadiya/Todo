@@ -123,7 +123,10 @@
                             url : url + id,
                             type : "DELETE",
                             success : function(){
-                                location.reload()
+                                
+                                get()
+                                Pending()
+                                Completed()
                             }
                         })
                 }
@@ -135,6 +138,8 @@
                         $("#des").val(data.description);
                     }) 
                     $("#edit").click(function(){
+                        $("#Addtask").show();
+                        $("#edit").hide();
                         var data = {
                             title: $("#task").val(),
                             description: $("#des").val()
@@ -145,12 +150,17 @@
                         data : JSON.stringify(data),
                         contentType : "application/json",
                         success : function(data){
-                            location.reload()
+                            $("#task").val('')
+                    $("#des").val('')
+                                get()
+                                Pending()
+                                Completed()
                         }
                         })
                     })
                 }
                 function Pending(){
+                  
                     pending.forEach(val => {
                         todo = "";
                         todo += `<div class = "${val.id}" style="background-color:#ddddda; border:2px solid black;  margin-bottom:2px; color:black; display:flex; border-radius:7px; justify-content:space-between; padding:10px; ">`
@@ -170,6 +180,7 @@
                     });
                 }
                 function Completed(){
+                   
                     completed.forEach(val => {
                         todo = "";
                         todo += `<div class = "${val.id}" style="background-color:#ddddda; border:2px solid black;  margin-bottom:2px; color:black; display:flex; border-radius:7px; justify-content:space-between; padding:10px; ">`
@@ -189,9 +200,10 @@
                     });
                 }
                 function get(){
-                    $("#pan h4").empty();
-                    $("#com h4").empty();
+                   
                     $.get(url , function(data){
+                        $("#pan h4").empty();
+                        $("#com h4").empty();
                         pending =[];
                         completed = [];
                         $.each(data, function(key, val){
@@ -226,6 +238,8 @@
                     $("#task").val('')
                     $("#des").val('')
                     get()
+                    Pending();
+                    Completed();
                 }
             })
         })
