@@ -75,8 +75,10 @@
                 return Math.floor(Math.random() * 1000)
             }
             function again(id){
+                $("."+id).remove()
+               
                         var data = {
-                        pedding : [],
+                        // pedding : [],
                         Completed : false
                     }
                     $.ajax({
@@ -85,20 +87,25 @@
                         data : JSON.stringify(data),
                         contentType : "application/json",
                         success : function(data){
-                            $("."+id).remove()
-                            $.each(data, function(key, val){
-                            if (val.Completed) {
-                                pending.push(val)
+                           
+                            
+                            // Pending()
+                            // $.each(data, function(key, val){
+                            if (data.Completed) {
+                                pending.push(data)
                             }
-                             })
+                            //  })
                           get()
+                        //   Pending()
                         }
                         })
                     } 
             function checkbox(id){
                 if ($("input.check").is(':checked')) {
+                    $("."+id).remove()
+                   
                     var data = {
-                        completed : [],
+                        // completed : [],
                         Completed : true
                     }
                     $.ajax({
@@ -107,13 +114,14 @@
                         data : JSON.stringify(data),
                         contentType : "application/json",
                         success : function(data){
-                            $("."+id).remove()
-                            $.each(data, function(key, val){
-                            if (val.Completed) {
-                                completed.push(val)
+                            // Completed()
+                            // $.each(data, function(key, val){
+                            if (data.Completed) {
+                                completed.push(data)
                             }
-                             })
-                            get()
+                            //  })
+                           get()
+                        //    Completed()
                         }
                         })
                 }  
@@ -123,42 +131,54 @@
                             url : url + id,
                             type : "DELETE",
                             success : function(){
-                                
                                 get()
-                                Pending()
-                                Completed()
+                                
                             }
                         })
                 }
-                function Edit(id){
-                    $("#Addtask").hide();
-                    $("#edit").show();
-                    $.get(url + id , function(data){
-                        $("#task").val(data.title);
-                        $("#des").val(data.description);
-                    }) 
-                    $("#edit").click(function(){
-                        $("#Addtask").show();
-                        $("#edit").hide();
-                        var data = {
-                            title: $("#task").val(),
-                            description: $("#des").val()
-                        }
-                        $.ajax({
-                        url: url + id,
-                        method : "PUT",
-                        data : JSON.stringify(data),
-                        contentType : "application/json",
-                        success : function(data){
-                            $("#task").val('')
-                    $("#des").val('')
-                                get()
-                                Pending()
-                                Completed()
-                        }
-                        })
-                    })
-                }
+                // function Edit(id){
+                //     console.log(id)
+                //     console.log("Edit Called ==>")
+                //     $("#Addtask").hide();
+                //     $("#edit").show();
+                //     $.get(url + id , function(data){
+                //         $("#task").val(data.title);
+                //         $("#des").val(data.description);
+                //         console.log(data)
+                //         console.log(url)
+                //     }) 
+                // }
+                // $("#edit").click(function(){
+                //     console.log("Edit Button Clicked ==>")
+                //     editBtn(id)
+                // })
+                // function editBtn(id){
+                //     console.log("Editing Data ==>")
+
+                //         $("#Addtask").show();
+                //         $("#edit").hide();
+                //         var data = {
+                //             title: $("#task").val(),
+                //             description: $("#des").val()
+                //         }
+                //         console.log(data)
+                //         $.ajax({
+                //         url: url + id,
+                //         method : "PUT",
+                //         data : JSON.stringify(data),
+                //         contentType : "application/json",
+                //         success : function(data){
+                //         console.log(data)
+
+                //             $("#task").val('')
+                //             $("#des").val('')
+                //                 get()
+                //                 // Pending()
+                //                 // Completed()
+                //         }
+                //         })
+                // }
+                
                 function Pending(){
                   
                     pending.forEach(val => {
@@ -172,11 +192,12 @@
                         todo += `</ul>`;
                         todo += `</div>`;
                         todo += `<div class="two">`
-                        todo += `<button id="${val.id}" onclick= "Edit('${val.id}')" class="edit">` + "Edit" + `</button>`;
+                        // todo += `<button onclick= "Edit('${val.id}')" class="edit">Edit</button>`;
                         todo += `<i class="fa-sharp fa-solid fa-trash" id="${val.id}" onclick= "del('${val.id}')" >` + `</i>`
                         todo += `</div>`;
                         todo += `</div>`;
                         $("#pan h4").append(todo);
+                      
                     });
                 }
                 function Completed(){
@@ -192,11 +213,13 @@
                         todo += `</ul>`;
                         todo += `</div>`;
                         todo += `<div class="two">`
-                        todo += `<button id="${val.id}" onclick= "Edit('${val.id}')" class="edit">` + "Edit" + `</button>`;
+                        // todo += `<button id="${val.id}" onclick= "Edit('${val.id}')" class="edit">` + "Edit" + `</button>`;
                         todo += `<i class="fa-sharp fa-solid fa-trash" id="${val.id}" onclick= "del('${val.id}')" >` + `</i>`
                         todo += `</div>`;
                         todo += `</div>`;
                         $("#com h4").append(todo);
+                        
+                        
                     });
                 }
                 function get(){
@@ -223,7 +246,7 @@
         $("#Addtask").click(function(e){
             e.preventDefault();
             var data = {
-                id : randomId(),
+                id : "",
                 title : $("#task").val(),
                 description: $("#des").val(),
                 Completed : false
@@ -234,12 +257,13 @@
                 contentType: "application/json",
                 data: JSON.stringify(data),
                 success: function(){
+                   
                     $("#pan h4").empty()
                     $("#task").val('')
                     $("#des").val('')
                     get()
                     Pending();
-                    Completed();
+                    // Completed();
                 }
             })
         })
@@ -250,7 +274,7 @@
         <input type="text" placeholder="Add Task" id="task" name="title">
         <input type="text" placeholder="Add Task Description" id="des" name="description">
         <input type="submit" value="Add Task" id="Addtask" >
-        <input type="submit" value="Edit " id="edit" style="display: none;">
+        <!-- <input type="submit" value="Edit " id="edit" style="display: none;"> -->
     </div>
     <div class="both">
         <div id="pan">
