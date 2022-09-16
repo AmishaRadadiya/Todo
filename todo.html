@@ -54,15 +54,6 @@
             border-radius: 10px;
         }
        .fa-sharp{
-        margin-left: 10px;
-       }
-       .edit{
-        background-color: #4a707a;
-        width: 40px;
-        color: white;
-        border-radius: 5px;
-       }
-       .fa-sharp{
         color: #4a707a;
        }
     </style>
@@ -72,13 +63,13 @@
     var completed = []
     const url="https://internapp.vercel.app/amisha/todos/";
     function randomId(){
-                return Math.floor(Math.random() * 1000)
-            }
-            function again(id){
-                $("."+id).remove()
-              
+        return Math.floor(Math.random() * 1000)
+    }
+    function again(id){
+        pending = []
+        completed = []
+               
                         var data = {
-                        // pedding : [],
                         Completed : false
                     }
                     $.ajax({
@@ -91,21 +82,21 @@
                             
                             // Pending()
                             // $.each(data, function(key, val){
-                            if (data.Completed) {
+                            // if (data.Completed) {
                                 pending.push(data)
-                            }
+                            // }
                             //  })
                           get()
                         //   Pending()
+                        //   Completed()
                         }
                         })
                     } 
-            function checkbox(id){
+                    function checkbox(id){
                 if ($("input.check").is(':checked')) {
-                    $("."+id).remove()
-                  
+                   
                     var data = {
-                        // completed : [],
+                        
                         Completed : true
                     }
                     $.ajax({
@@ -116,12 +107,13 @@
                         success : function(data){
                             // Completed()
                             // $.each(data, function(key, val){
-                            if (data.Completed) {
+                            // if (data.Completed) {
                                 completed.push(data)
-                            }
+                            // }
                             //  })
                            get()
                         //    Completed()
+                        //    Pending()
                         }
                         })
                 }  
@@ -136,51 +128,7 @@
                             }
                         })
                 }
-                // function Edit(id){
-                //     console.log(id)
-                //     console.log("Edit Called ==>")
-                //     $("#Addtask").hide();
-                //     $("#edit").show();
-                //     $.get(url + id , function(data){
-                //         $("#task").val(data.title);
-                //         $("#des").val(data.description);
-                //         console.log(data)
-                //         console.log(url)
-                //     }) 
-                // }
-                // $("#edit").click(function(){
-                //     console.log("Edit Button Clicked ==>")
-                //     editBtn(id)
-                // })
-                // function editBtn(id){
-                //     console.log("Editing Data ==>")
-
-                //         $("#Addtask").show();
-                //         $("#edit").hide();
-                //         var data = {
-                //             title: $("#task").val(),
-                //             description: $("#des").val()
-                //         }
-                //         console.log(data)
-                //         $.ajax({
-                //         url: url + id,
-                //         method : "PUT",
-                //         data : JSON.stringify(data),
-                //         contentType : "application/json",
-                //         success : function(data){
-                //         console.log(data)
-
-                //             $("#task").val('')
-                //             $("#des").val('')
-                //                 get()
-                //                 // Pending()
-                //                 // Completed()
-                //         }
-                //         })
-                // }
-                
                 function Pending(){
-                  
                     pending.forEach(val => {
                         todo = "";
                         todo += `<div class = "${val.id}" style="background-color:#ddddda; border:2px solid black;  margin-bottom:2px; color:black; display:flex; border-radius:7px; justify-content:space-between; padding:10px; ">`
@@ -192,16 +140,13 @@
                         todo += `</ul>`;
                         todo += `</div>`;
                         todo += `<div class="two">`
-                        // todo += `<button onclick= "Edit('${val.id}')" class="edit">Edit</button>`;
                         todo += `<i class="fa-sharp fa-solid fa-trash" id="${val.id}" onclick= "del('${val.id}')" >` + `</i>`
                         todo += `</div>`;
                         todo += `</div>`;
                         $("#pan h4").append(todo);
-                      
                     });
                 }
                 function Completed(){
-                   
                     completed.forEach(val => {
                         todo = "";
                         todo += `<div class = "${val.id}" style="background-color:#ddddda; border:2px solid black;  margin-bottom:2px; color:black; display:flex; border-radius:7px; justify-content:space-between; padding:10px; ">`
@@ -213,7 +158,6 @@
                         todo += `</ul>`;
                         todo += `</div>`;
                         todo += `<div class="two">`
-                        // todo += `<button id="${val.id}" onclick= "Edit('${val.id}')" class="edit">` + "Edit" + `</button>`;
                         todo += `<i class="fa-sharp fa-solid fa-trash" id="${val.id}" onclick= "del('${val.id}')" >` + `</i>`
                         todo += `</div>`;
                         todo += `</div>`;
