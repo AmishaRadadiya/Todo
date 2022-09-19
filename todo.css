@@ -39,10 +39,22 @@ input::placeholder{
     background-color: #4a707a;
     color: white;
     font-weight: bold;
-    margin: 10px 0;
+    margin: 15px;
+    padding: 15px 0;
     text-align: center;
-    border-radius: 10px;
+    /* border-radius: 10px; */
 }
 .fa-sharp{
 color: #4a707a;
+}
+.todo-item{
+    background-color:#ddddda; 
+    border:2px solid black;  
+    margin-bottom:2px; 
+    color:black; 
+    display:flex; 
+    border-radius:7px; 
+    justify-content:space-between; 
+    padding:10px;
+    margin: 15px; 
 }

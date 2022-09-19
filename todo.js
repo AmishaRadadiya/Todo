@@ -5,8 +5,7 @@ function randomId(){
     return Math.floor(Math.random() * 1000)
 }
 function again(id){
-    pending = []
-    completed = []
+    var pending = []
                     var data = {
                     Completed : false
                 }
@@ -50,7 +49,7 @@ function again(id){
             function Pending(){
                 pending.forEach(val => {
                     todo = "";
-                    todo += `<div class = "${val.id}" style="background-color:#ddddda; border:2px solid black;  margin-bottom:2px; color:black; display:flex; border-radius:7px; justify-content:space-between; padding:10px; ">`
+                    todo += `<div class = "${val.id} todo-item  ">`
                     todo += `<div class="one">`
                     todo += `<input type="checkbox" id="${val.id}" onclick="checkbox('${val.id}')" class="check">`
                     todo += `<ul style="list-style: none;">`;
@@ -68,7 +67,7 @@ function again(id){
             function Completed(){
                 completed.forEach(val => {
                     todo = "";
-                    todo += `<div class = "${val.id}" style="background-color:#ddddda; border:2px solid black;  margin-bottom:2px; color:black; display:flex; border-radius:7px; justify-content:space-between; padding:10px; ">`
+                    todo += `<div class = "${val.id} todo-item" >`
                     todo += `<div class="one">`
                     todo += `<input type="checkbox" id="${val.id}" onclick="again('${val.id}')" class="check" checked>`
                     todo += `<ul style="list-style: none;">`;
@@ -121,9 +120,9 @@ $(document).ready(function(){
                 $("#pan h4").empty()
                 $("#task").val('')
                 $("#des").val('')
+                $("#task").focus()
                 get()
                 Pending();
-               
             }
         })
     })
