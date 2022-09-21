@@ -10,8 +10,9 @@ input{
     height: 25px;
     border-radius: 5px;
 }
-#task,#des,#Addtask,#edit{
-    width: 20em;
+#task,#des,#Addtask{
+    width: 18em;
+    margin-top: 0;
 }
 input::placeholder{
     color: white;
@@ -66,6 +67,8 @@ cursor: pointer;
 }
 .error{
     color: red;
+    margin-top: 20px;
+   
 }
 .errorbox{
     display: flex;

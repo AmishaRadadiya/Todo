@@ -128,7 +128,6 @@ class todo{
                             })
                         }
      post(url){
-        
             var data = {
                 id : "",
                 title : $("#task").val(),
@@ -148,7 +147,6 @@ class todo{
                         newTodo.get(url);
                         newTodo.Pending();
                 }
-            
         })
     }
 }
@@ -162,23 +160,27 @@ $("#Addtask").click(function(e){
         description: $("#des").val(),
         Completed : false
     }
-    if (data.title === "" && data.description === "") {
-      $("#first").text("Task Required")
-      $("#second").text("Description Required")
+    if (data.title == "" && data.description == "") {
+      $("#first").text("*Task Required")
+      $("#second").text("*Description Required")
     }
-    else if (data.title === "") {
-        $("#first").text("Task Required")
-        $("#second").text(" ")
+    else if (data.title == "") {
+        $("#first").text("*Task Required")
+        $("#second").html("")
     }
-    else if (data.description === "") {
-        $("#second").text("Description Required")
+    else if (data.description == "") {
+        $("#second").text("*Description Required")
         $("#first").text(" ")
     }
-    else{
+    else{  
+
+        // newTodo.get(url)
         newTodo.post(url);
-        $("#first").hide()
-        $("#second").hide()
+        $("#first").text(" ")
+        $("#second").text(" ")
     }
+
+    // newTodo.get(url)
     
 })
 
